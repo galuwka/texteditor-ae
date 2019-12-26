@@ -61,9 +61,8 @@ export class TextEditDirective implements OnChanges {
     if (!!this.range) {
 
       //somehow need to track if wrapper is span or not?
-      this.wrapper = document.createElement('span');
-      this.wrapper.innerText = this.searchString;
-      this.wrapper.setAttribute('id', this.searchString);
+      this.wrapper = this.renderer.createElement('span');
+      this.renderer.setProperty( this.wrapper , 'innerText', this.searchString);
       this.applyStyle();
       this.range.insertNode(this.wrapper);
     }
@@ -73,7 +72,7 @@ export class TextEditDirective implements OnChanges {
 
   private applyStyle() {
     if (!!this.wrapper) {
-      this.wrapper.setAttribute('class', `${this.style.join(' ')}`);
+      this.renderer.setAttribute(this.wrapper, 'class', `${this.style.join(' ')}`);
     }
 }
 
