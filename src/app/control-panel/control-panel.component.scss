@@ -12,6 +12,11 @@
   margin-right: 400px;
 }
 
+.active {
+  background-color: #ffa500;
+  outline: none;
+}
+
 button + button {
   margin-left: 5px;
 }

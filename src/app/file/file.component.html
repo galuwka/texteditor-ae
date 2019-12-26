@@ -1,9 +1,9 @@
 <div class="file">
-  <p [innerHTML]="text$ | async | textTransform: style: replace">
+  <p [innerHTML]="text$ | async" appTextEdit [classCSS]="style | async" [wordReplace]="replace">
   {{text$ | async}}
   </p>
   <p>Choose Synonyms</p>
   <select (change)='onChange($event)'>
-    <option *ngFor="let item of synonym | async; let i = index" [value]="item.word">{{item.word}}</option>
+    <option *ngFor="let item of synonym | async" [value]="item.word">{{item.word}}</option>
   </select>
 </div>

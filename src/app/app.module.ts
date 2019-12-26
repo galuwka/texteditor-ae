@@ -7,8 +7,8 @@ import {HeaderComponent} from './header/header.component';
 import {FormsModule} from '@angular/forms';
 import {TextService} from './text-service/text.service';
 import {FooterComponent} from './footer/footer.component';
-import {TextTransformPipe} from './text-transform/text-transform.pipe';
 import {HttpClientModule} from "@angular/common/http";
+import { TextEditDirective } from './text-edit/text-edit.directive';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import {HttpClientModule} from "@angular/common/http";
     ControlPanelComponent,
     HeaderComponent,
     FooterComponent,
-    TextTransformPipe
+    TextEditDirective
   ],
   imports: [
     BrowserModule,

@@ -1,14 +1,13 @@
 import {
   ChangeDetectionStrategy,
-  Component,
-  Renderer2,
+  Component
 } from '@angular/core';
 import {TextService} from "../text-service/text.service";
 
 enum wordStyling {
-  bold = 'font-weight: bold',
-  italic = 'font-style: italic',
-  underline = 'text-decoration: underline'
+  bold = 'bold',
+  italic = 'italic',
+  underline = 'underline'
 }
 
 @Component({
@@ -20,15 +19,16 @@ enum wordStyling {
 
 export class ControlPanelComponent {
 
-  constructor(private render: Renderer2, private textService: TextService) {
+  constructor(private textService: TextService) {
   }
 
-  isActive = {
+  public isActive = {
     bold: false,
     italic: false,
     underline: false
   };
 
+  public cssClass: string;
 
   public boldFormatter() {
     this.handlerFormatter(wordStyling.bold, "bold");
@@ -42,13 +42,14 @@ export class ControlPanelComponent {
     this.handlerFormatter(wordStyling.underline, "underline");
   }
 
-  handlerFormatter(property: string, style: string) {
+  private handlerFormatter(property: string, style: string) {
     if (!this.isActive[style]) {
       this.textService.style.next([...this.textService.style.getValue(), property]);
     } else {
-      this.textService.style.getValue().splice(this.textService.style.getValue().indexOf(property), 1)
+      this.textService.style.getValue().splice(this.textService.style.getValue().indexOf(property), 1);
+      this.textService.style.next([...this.textService.style.getValue()]);
     }
-
+    this.cssClass = this.textService.style.getValue().join(" ");
     this.isActive[style] = !this.isActive[style];
   }
 }

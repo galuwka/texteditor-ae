@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 @Injectable()
 export class TextService {
   public style = new BehaviorSubject([]);
+  public textSelected = new BehaviorSubject('');
   private SYNONIM_API = 'https://api.datamuse.com/words?rel_syn=';
 
   constructor(private http: HttpClient) {
