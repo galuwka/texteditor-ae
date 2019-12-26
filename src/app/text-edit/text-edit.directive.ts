@@ -7,7 +7,6 @@ import {
   Renderer2,
   SimpleChanges
 } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
 import {TextService} from "../text-service/text.service";
 
 @Directive({
@@ -25,11 +24,8 @@ export class TextEditDirective implements OnChanges {
 
   private searchString = '';
   private range: any;
-  private selection: any;
   private wrapper: any;
 
-  @HostListener('dblclick', ['$event'])
-  @HostListener('click', ['$event'])
   @HostListener('mouseup', ['$event'])
   select(event) {
     if (event.view.getSelection().type === "Range") {
@@ -44,7 +40,7 @@ export class TextEditDirective implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.classCSS) {
       this.style = changes.classCSS.currentValue;
-      this.textFormatter();
+      this.applyStyle();
     }
     if (changes.wordReplace) {
       this.searchString = changes.wordReplace.currentValue;
@@ -53,21 +49,15 @@ export class TextEditDirective implements OnChanges {
   }
 
   private textFormatter() {
-
-    if (!!this.range) {
-      this.wrapper = this.range.extractContents();
-    }
-
     if (!!this.range) {
 
       //somehow need to track if wrapper is span or not?
       this.wrapper = this.renderer.createElement('span');
       this.renderer.setProperty( this.wrapper , 'innerText', this.searchString);
       this.applyStyle();
+      this.range.deleteContents();
       this.range.insertNode(this.wrapper);
     }
-
-
   }
 
   private applyStyle() {
