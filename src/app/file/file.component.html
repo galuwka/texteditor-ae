@@ -4,6 +4,6 @@
   </p>
   <p>Choose Synonyms</p>
   <select (change)='onChange($event)'>
-    <option *ngFor="let item of synonym | async" [value]="item.word">{{item.word}}</option>
+    <option *ngFor="let item of synonym | async; trackBy: trackByFn" [value]="item.word">{{item.word}}</option>
   </select>
 </div>

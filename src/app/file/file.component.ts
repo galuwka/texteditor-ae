@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnInit, OnDestroy} from '@angular/core';
-import {TextService} from '../text-service/text.service';
-import {Observable, Subscription} from "rxjs";
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Synonym, TextService} from '../text-service/text.service';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-file',
@@ -8,11 +8,10 @@ import {Observable, Subscription} from "rxjs";
   styleUrls: ['./file.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FileComponent implements OnInit, OnDestroy {
-  text$: Promise<string>;
+export class FileComponent implements OnInit {
+  text$: Observable<string>;
   style: Observable<string[]>;
-  synonym: Observable<any>;
-  subscriber: Subscription;
+  synonym: Observable<Synonym[]>;
   text: string;
   replace = '';
 
@@ -21,21 +20,18 @@ export class FileComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscriber = this.textService.textSelected.subscribe((item) => {
-      this.synonym = this.textService.getSynonymos(item);
-    });
+    this.synonym = this.textService.getSynonymos();
     this.text$ = this.textService.getMockText();
     this.style = this.textService.style.asObservable();
-
   }
 
-  onChange($event) {
+  onChange($event: Event & { target: HTMLOptionElement }) {
     if ($event.target.value) {
       this.replace = $event.target.value;
     }
   }
 
-  ngOnDestroy() {
-    this.subscriber.unsubscribe();
+  trackByFn(index: number, {word}: Synonym) {
+    return word;
   }
 }

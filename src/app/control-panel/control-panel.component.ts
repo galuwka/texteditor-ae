@@ -1,14 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component
-} from '@angular/core';
-import {TextService} from "../text-service/text.service";
-
-enum wordStyling {
-  bold = 'bold',
-  italic = 'italic',
-  underline = 'underline'
-}
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {TextService, WordStyling} from '../text-service/text.service';
 
 @Component({
   selector: 'app-control-panel',
@@ -22,34 +13,35 @@ export class ControlPanelComponent {
   constructor(private textService: TextService) {
   }
 
-  public isActive = {
-    bold: false,
-    italic: false,
-    underline: false
+  public isActive: { [key in WordStyling]: boolean } = {
+    [WordStyling.bold]: false,
+    [WordStyling.italic]: false,
+    [WordStyling.underline]: false
   };
 
-  public cssClass: string;
-
   public boldFormatter() {
-    this.handlerFormatter(wordStyling.bold, "bold");
+    this.handlerFormatter(WordStyling.bold);
   }
 
   public italicFormatter() {
-    this.handlerFormatter(wordStyling.italic, "italic");
+    this.handlerFormatter(WordStyling.italic);
   }
 
   public underlineFormatter() {
-    this.handlerFormatter(wordStyling.underline, "underline");
+    this.handlerFormatter(WordStyling.underline);
   }
 
-  private handlerFormatter(property: string, style: string) {
-    if (!this.isActive[style]) {
-      this.textService.style.next([...this.textService.style.getValue(), property]);
-    } else {
-      this.textService.style.getValue().splice(this.textService.style.getValue().indexOf(property), 1);
-      this.textService.style.next([...this.textService.style.getValue()]);
-    }
-    this.cssClass = this.textService.style.getValue().join(" ");
-    this.isActive[style] = !this.isActive[style];
+  private handlerFormatter(property: WordStyling) {
+    this.isActive = {
+      ...this.isActive,
+      [property]: !this.isActive[property]
+    };
+
+    this.textService.style.next(
+      (Object.keys(this.isActive) as WordStyling[])
+        .filter((key) => {
+          return this.isActive[key];
+        })
+    );
   }
 }

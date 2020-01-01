@@ -23,8 +23,8 @@ export class TextEditDirective implements OnChanges {
   private style: string[];
 
   private searchString = '';
-  private range: any;
-  private wrapper: any;
+  private range: Range;
+  private wrapper: HTMLSpanElement;
 
   @HostListener('mouseup', ['$event'])
   select(event) {
